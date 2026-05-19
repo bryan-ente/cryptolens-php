@@ -12,6 +12,7 @@ namespace Cryptolens_PHP_Client {
     use Cryptolens_PHP_Client\Endpoints;
     use Cryptolens_PHP_Client\Key;
     use Cryptolens_PHP_Client\License;
+    use Cryptolens_PHP_Client\LicenseTemplate;
     use Cryptolens_PHP_Client\Message;
     use Cryptolens_PHP_Client\PaymentForm;
     use Cryptolens_PHP_Client\Reseller;
@@ -58,7 +59,9 @@ namespace Cryptolens_PHP_Client {
         public const CRYPTOLENS_DATA = "Data";
 
         public const CRYPTOLENS_USER = "User";
-        
+
+        public const CRYPTOLENS_LICENSETEMPLATES = "LicenseTemplate";
+
         private string $token;
 
         private int $productId;
@@ -78,6 +81,7 @@ namespace Cryptolens_PHP_Client {
         private $reseller;
         private $subscription;
         private $user;      
+        private $licenseTemplate;
 
     
         /**
@@ -148,7 +152,7 @@ namespace Cryptolens_PHP_Client {
             require_once dirname(__FILE__) . "/classes/Analytics.cryptolens.php";
             require_once dirname(__FILE__) . "/classes/User.cryptolens.php";
             require_once dirname(__FILE__) . "/classes/License.cryptolens.php";
-
+            require_once dirname(__FILE__) . "/classes/LicenseTemplate.cryptolens.php";
 
         }
 
@@ -243,6 +247,11 @@ namespace Cryptolens_PHP_Client {
         public function user(): User {
             if(!$this->user) $this->user = new User($this);
             return $this->user;
+        }
+
+        public function licenseTemplate(): LicenseTemplate {
+            if(!$this->licenseTemplate) $this->licenseTemplate = new LicenseTemplate($this);
+            return $this->licenseTemplate;
         }
 
     }

@@ -29,6 +29,10 @@ namespace Cryptolens_PHP_Client {
             "removeFeature" => "https://api.cryptolens.io/api/key/removefeature",
             "unblockKey" => "https://api.cryptolens.io/api/key/unblockkey",
             "machineLockLimit" => "https://api.cryptolens.io/api/key/machinelocklimit",
+            "changeNotes" => "https://api.cryptolens.io/api/key/changenotes",
+            "changeReseller" => "https://api.cryptolens.io/api/key/changereseller",
+            "changeCustomer" => "https://api.cryptolens.io/api/key/changecustomer",
+            "trialActivation" => "https://api.cryptolens.io/api/key/trialactivation",
             # Auth
             "keyLock" => "https://api.cryptolens.io/api/auth/keylock",
             # Products
@@ -78,7 +82,9 @@ namespace Cryptolens_PHP_Client {
             "getUsers" => "https://api.cryptolens.io/api/userauth/GetUsers",
             "changePassword" => "https://api.cryptolens.io/api/userauth/ChangePassword",
             "resetPasswordToken" => "https://api.cryptolens.io/api/userauth/ResetPasswordToken",
-            "removeUser" => "https://api.cryptolens.io/api/userauth/RemoveUser"
+            "removeUser" => "https://api.cryptolens.io/api/userauth/RemoveUser",
+            # License Template
+            "getLicenseTemplates" => "https://api.cryptolens.io/api/licensetemplate/getlicensetemplates"
         ];
 
         /**

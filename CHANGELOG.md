@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4
+
+* changed some paramteter types to the `Key.cryptolens.php` class
+* added `change_notes`, `change_reseller`, `change_customer` and `trial_activation` endpoints to the `Key.cryptolens.php` class
+* added `LicenseTemplate.cryptolens.php` class to support `get_license_templates` endpoint
+
 ## v1.3
 
 * added `customerId` parameter to `Customer::getCustomers()` function to filter customers by their ID.
