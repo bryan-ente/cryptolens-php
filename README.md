@@ -3,12 +3,19 @@
 This repository contains functions for interacting with the Cryptolens Web API from PHP.
 All endpoints are supported. This API client uses Cryptolens Web API 3.
 
-For more information about the API and possible values and types, visit https://app.cryptolens.io/docs/api/v3, the official API documentation.
+For more information about the API and possible values and types, visit [the official API documentation](https://app.cryptolens.io/docs/api/v3).
 
 To use the library, you can `require_once` the `loader.php` which loads all other classes automatically or use composer where you just have to `require` the composer `autoload.php`. Currently, this library is not safe to use for CLI.
 Inside your script you need to `use` the classes, here is an example:
 
 Needs PHP >7.4.0, works with 8.2
+
+> [!NOTE]
+> This is an independent PHP API client for Cryptolens.
+> The official "client" currently consists of a small procedural script focused on license activation... This package takes a slightly more ambitious approach and provides a structured, object-oriented wrapper around the Cryptolens API.
+>
+> Official client:
+> [https://github.com/Cryptolens/cryptolens-php](https://github.com/Cryptolens/cryptolens-php)
 
 ## Code example
 
