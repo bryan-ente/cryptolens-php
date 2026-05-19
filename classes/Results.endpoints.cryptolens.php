@@ -74,6 +74,23 @@ namespace Cryptolens_PHP_Client {
                     "Result",
                     "Message"
                 ],
+                "changeNotes" => [
+                    "Result",
+                    "Message"
+                ],
+                "changeReseller" => [
+                    "Result",
+                    "Message"
+                ],
+                "changeCustomer" => [
+                    "Result",
+                    "Message"
+                ],
+                "trialActivation" => [
+                    "Result",
+                    "Message",
+                ],
+
             ],
             "Auth" => [
                 "keyLock" => [
@@ -240,6 +257,13 @@ namespace Cryptolens_PHP_Client {
                         "Message"
                     ],
                     "removeUser" => [
+                        "Result",
+                        "Message"
+                    ]
+                ],
+                "LicenseTemplate" => [
+                    "getLicenseTemplates" => [
+                        "LicenseTemplates",
                         "Result",
                         "Message"
                     ]

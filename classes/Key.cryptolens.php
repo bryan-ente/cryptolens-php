@@ -112,7 +112,7 @@ namespace Cryptolens_PHP_Client {
          * @param string $machineid The machine ID the key is mapped to, you can leave this empty, but sometimes you recieve an error. Read more in the documentation.
          * @link https://api.cryptolens.io/api/key/deactivate
          */
-        public function deactivate(string $key, string $machineid = null){
+        public function deactivate(string $key, string $machineid = ""){
             $parms = $this->build_params($this->cryptolens->getToken(), $this->cryptolens->getProductId(), $key, $machineid);
             $c = $this->connection($parms, "deactivate");
 
@@ -133,7 +133,7 @@ namespace Cryptolens_PHP_Client {
          * @return array|bool Returns an array with the keys "Key", "CustomerId" (only if "NewCustomer" or "AddOrUseExistingCustomer" is set), "Result" and "Message". The key "Key" gets renamed to "Keys" if "NoOfKeys" is greater than 1. On error it returns the Cryptolens response, with the "error" and "response" key
          * @link https://api.cryptolens.io/api/key/createKey
          */
-        public function create_key(array $additional_flags = null){
+        public function create_key(array $additional_flags = []){
             $parms = $this->build_params($this->cryptolens->getToken(), $this->cryptolens->getProductId(), null, null, $additional_flags);
             $c = $this->connection($parms, "createKey");
             if($c == true){
@@ -160,7 +160,7 @@ namespace Cryptolens_PHP_Client {
          * 
          * @param string [optional] Lock the new generated key to a machineId
          */
-        public function create_trial_key(string $machineId = null){
+        public function create_trial_key(string $machineId = ""){
             $parms = $this->build_params($this->cryptolens->getToken(), $this->cryptolens->getProductId(), null, $machineId);
             $c = $this->connection($parms, "createTrialKey");
             if($c == true){
@@ -189,7 +189,7 @@ namespace Cryptolens_PHP_Client {
          * @return array|bool Returns an array with the response or bool on failure
          */
         public function create_key_from_template(int $template){
-            $parms = $this->build_params($this->cryptolens->getToken(), null, null, null, ["LicenseTemplateId" => $template]);
+            $parms = $this->build_params($this->cryptolens->getToken(), "", null, null, ["LicenseTemplateId" => $template]);
             $c = $this->connection($parms, "createKeyFromTemplate");
             if($c == true){
                 if($c["result"] != 0){
@@ -212,7 +212,7 @@ namespace Cryptolens_PHP_Client {
          * @param array $additional_flags Allows you to set more options, like e.g. metadata, fieldstoreturn, floatingtimeinterval and modelversion
          * @return array|bool Returns the key "response" and "licenseKey" (base64 decoded JSON array)
          */
-        public function get_key(string $key, array $additional_flags = null){
+        public function get_key(string $key, array $additional_flags = []){
             $parms = $this->build_params($this->cryptolens->getToken(), $this->cryptolens->getProductId(), $key, null, $additional_flags);
             $c = $this->connection($parms, "getKey");
             if($c == true){
@@ -346,10 +346,81 @@ namespace Cryptolens_PHP_Client {
             }
         }
 
+        public function change_notes(string $key, string $notes){
+            $parms = $this->build_params($this->cryptolens->getToken(), $this->cryptolens->getProductId(), $key, null, ["Notes" => $notes]);
+            if (strlen($notes) > 500) {
+                return Cryptolens::outputHelper([
+                    "error" => "Notes cannot be longer than 500 characters.",
+                    "response" => null
+                ]);
+            }
+            $c = $this->connection($parms, "changeNotes");
+            if($c == true || $this->check_rm($c)){
+                return Cryptolens::outputHelper($c);
+            } else {
+                Cryptolens::outputHelper([
+                    "error" => "An error occurred",
+                    "response" => $c
+                ]);
+            }
+        }
+
+        /**
+         * change_reseller() - Removes or changes the reseller for specified key.
+         * @param string $key The key.
+         * @param int $resellerId The reseller ID, if set to 0 the current reseller will be removed.
+         * @return array|bool
+         */
+        public function change_reseller(string $key, int $resellerId = 0){
+            $parms = $this->build_params($this->cryptolens->getToken(), $this->cryptolens->getProductId(), $key, null, ["ResellerId" => $resellerId]);
+            $c = $this->connection($parms, "changeReseller");
+            if($c == true || $this->check_rm($c)){
+                return Cryptolens::outputHelper($c);
+            } else {
+                Cryptolens::outputHelper([
+                    "error" => "An error occurred",
+                    "response" => $c
+                ]);
+            }
+        }
+
+        /**
+         * change_customer() - Removes or changes the customer for specified key.
+         * @param string $key The key
+         * @param int $customerId The customer ID, if set to 0 the current customer will be removed.
+         * @return array|bool
+         * 
+         */
+        public function change_customer(string $key, int $customerId = 0){
+            $parms = $this->build_params($this->cryptolens->getToken(), $this->cryptolens->getProductId(), $key, null, ["CustomerId" => $customerId]);
+            $c = $this->connection($parms, "changeCustomer");
+            if($c == true || $this->check_rm($c)){
+                return Cryptolens::outputHelper($c);
+            } else {
+                Cryptolens::outputHelper([
+                    "error" => "An error occurred",
+                    "response" => $c
+                ]);
+            }
+        }
+
+        public function trial_activation(string $key, bool $enabled){
+            $parms = $this->build_params($this->cryptolens->getToken(), $this->cryptolens->getProductId(), $key, null, ["Enabled" => (string)$enabled]);
+            $c = $this->connection($parms, "trialActivation");
+            if($c == true || $this->check_rm($c)){
+                return Cryptolens::outputHelper($c);
+            } else {
+                Cryptolens::outputHelper([
+                    "error" => "An error occurred",
+                    "response" => $c
+                ]);
+            }
+        }
+
         /** 
          * build_params() - Internal helper function building the parameters for the cURL request
          */
-        private function build_params($token, $product_id, $key = null, $machineid = null, array $additional_flags = null){
+        private function build_params(string $token, string $product_id, ?string $key = null, ?string $machineid = null, ?array $additional_flags = null){
             $parms = array(
                 "token" => $token,
                 "ProductId" => $product_id,
